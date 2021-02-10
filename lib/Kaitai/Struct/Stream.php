@@ -21,9 +21,10 @@ class Stream {
      * @param resource|string $stream
      */
     public function __construct($stream) {
-        if (PHP_INT_SIZE !== 8) {
-            throw new NotSupportedPlatformError("Only 64-bit platform is implemented");
-        }
+        // DIRTY 32-BIT HACK
+        //if (PHP_INT_SIZE !== 8) {
+        //    throw new NotSupportedPlatformError("Only 64-bit platform is implemented");
+        //}
         if (is_string($stream)) {
             $this->stream = fopen('php://memory', 'r+b');
             fwrite($this->stream, $stream);
@@ -169,7 +170,10 @@ class Stream {
     }
 
     public function readU8le(): int {
-        return unpack("P", $this->readBytes(8))[1];
+        // DIRTY 32-BIT HACK
+        $blarg = $this->readBytes(8);
+        return 0;
+        //return unpack("P", $this->readBytes(8))[1];
     }
 
     /**************************************************************************
